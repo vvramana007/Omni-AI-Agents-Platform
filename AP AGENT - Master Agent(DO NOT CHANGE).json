@@ -1,0 +1,3360 @@
+{
+  "name": "AP AGENT - Master Agent(DO NOT CHANGE)",
+  "nodes": [
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d2f0af84-949f-457c-9407-e0cab4b7087c",
+              "leftValue": "={{ $('Microsoft Outlook Trigger').item.binary }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -864,
+        -960
+      ],
+      "id": "ba0ad5b1-cc0c-4754-bd34-8c0e749cc5fb",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "84827368-fbdf-4473-b55e-2c90a142d155",
+              "name": "attachments",
+              "value": "={{ $('Get a message').item.binary.keys()}}",
+              "type": "array"
+            },
+            {
+              "id": "3feb51ad-bfe3-47a7-a9c1-9dc7bffdcdf0",
+              "name": "message_id",
+              "value": "={{ $('Get a message').item.json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -384,
+        -1056
+      ],
+      "id": "4cbafade-e4f7-488e-84ce-03d78d536f86",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "attachments",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -1056
+      ],
+      "id": "d3300e7e-1c1d-4f31-b9ee-1f629867d05c",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "advanced": true,
+        "mergeByFields": {
+          "values": [
+            {
+              "field1": "message_id",
+              "field2": "id"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        176,
+        -816
+      ],
+      "id": "84f520e1-ac2a-4b42-a0f4-0a900e723388",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5d84e49d-edd3-4c01-ae08-38f1e2082353",
+              "leftValue": "={{ $json.attachment_metadata.fileName }}",
+              "rightValue": "Outlook-45hlthdw.jpg",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "15758896-668d-4d3a-9bf3-b768bec856a7",
+              "leftValue": "={{ $json.attachment_metadata.fileName }}",
+              "rightValue": "Outlook-osjbff22.jpg",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        -1072
+      ],
+      "id": "12aa00ee-7cbd-4be9-be38-42413c24a063",
+      "name": "Filter1",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "967263ff-6c38-4be6-b09c-34e7b55856ab",
+              "name": "attachment_metadata",
+              "value": "={{ $('Get a message').item.binary.values() }}",
+              "type": "array"
+            },
+            {
+              "id": "05c94eb3-933d-4e90-b613-fe147e6ec2b1",
+              "name": "message_id",
+              "value": "={{ $('Get a message').item.json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -400,
+        -816
+      ],
+      "id": "e5186df3-94ee-4da8-b132-ccacd47e98fd",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "attachment_metadata",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -816
+      ],
+      "id": "b85aece4-df39-4c46-afa2-2a49687a8a30",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        96,
+        -1072
+      ],
+      "id": "ace8dec4-3422-43d9-972c-470dd5844220",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "content": "## get pdf and information from MAIL",
+        "height": 328,
+        "width": 660,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        -1072
+      ],
+      "id": "570193be-9f56-409b-af6a-87fc1319c35a",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Split out details",
+        "height": 500,
+        "width": 960,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        -1104
+      ],
+      "id": "0274543e-b69c-4410-8fbb-82f5ce9d4f29",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## user request determine text using keywords",
+        "height": 240,
+        "width": 360
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -592
+      ],
+      "id": "e08769c7-a69d-4574-92bc-082183085afb",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        464,
+        -512
+      ],
+      "id": "52d67ada-6994-4402-8289-62b98805646d",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {},
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlookTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        -960
+      ],
+      "id": "339a763d-91a1-429e-ba53-3abb37abf1e4",
+      "name": "Microsoft Outlook Trigger",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "I7BwV0g6zUDS8SPR",
+          "name": "Raj-Omni AI AP agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.cloud.llamaindex.ai/api/parsing/upload",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer llx-gOOTmxw25ZfXGulGmoWFtKPS7iSHvh2dCaqur1nouUh2gEby"
+            },
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "={{ $json.attachments }}"
+            },
+            {
+              "name": "premium_mode",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -512,
+        -128
+      ],
+      "id": "20bb7001-2708-4142-91c7-16f624049b38",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "SUCCESS",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "88b5615e-79a3-42c9-8d5b-8bdd04f572f1",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "PENDING",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -192,
+        -128
+      ],
+      "id": "d57108ac-892f-4140-8e83-f626f2c40199",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -192,
+        128
+      ],
+      "id": "05ed516e-7f5a-4f6d-b8dc-57ac61cebae1",
+      "name": "Wait",
+      "webhookId": "b128f966-fd41-4ac3-8499-d8ad1f4f8d0a"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.cloud.llamaindex.ai/api/parsing/job/{{ $json.id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer llx-gOOTmxw25ZfXGulGmoWFtKPS7iSHvh2dCaqur1nouUh2gEby"
+            },
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -352,
+        -128
+      ],
+      "id": "8bc8d4fb-18cc-4348-aaca-fb2c621a4069",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.cloud.llamaindex.ai/api/v1/parsing/job/{{$json.id}}/result/raw/markdown",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer llx-gOOTmxw25ZfXGulGmoWFtKPS7iSHvh2dCaqur1nouUh2gEby"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -32,
+        -144
+      ],
+      "id": "5a95fe7f-030f-470f-93fa-31da292d0965",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        -752,
+        -960
+      ],
+      "id": "08d37967-44f8-41b7-a474-9a1120d26429",
+      "name": "Get a message",
+      "webhookId": "3870183c-e03b-4063-a70f-e208771b3d17",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "I7BwV0g6zUDS8SPR",
+          "name": "Raj-Omni AI AP agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Llama cloud accept all file type",
+        "height": 540,
+        "width": 820
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -224
+      ],
+      "id": "34cfb37b-9a18-4e4a-801f-4edafdd72349",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "compare": "selectedFields",
+        "fieldsToCompare": "subject",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.removeDuplicates",
+      "typeVersion": 2,
+      "position": [
+        -992,
+        -960
+      ],
+      "id": "e0a429ee-a1c8-47e0-8a03-2335c25707cf",
+      "name": "Remove Duplicates"
+    },
+    {
+      "parameters": {
+        "resource": "worksheet",
+        "operation": "append",
+        "workbook": {
+          "__rl": true,
+          "value": "F692D2862D814F5C!s2c292aa96ce4423c8c80430ba92bcbe9",
+          "mode": "list",
+          "cachedResultName": "po invoices2",
+          "cachedResultUrl": "https://onedrive.live.com/personal/f692d2862d814f5c/_layouts/15/doc.aspx?resid=2c292aa9-6ce4-423c-8c80-430ba92bcbe9&cid=f692d2862d814f5c"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "{4944B724-7BE9-43BA-A42D-684633272123}",
+          "mode": "list",
+          "cachedResultName": "Non PO",
+          "cachedResultUrl": "https://onedrive.live.com/personal/f692d2862d814f5c/_layouts/15/doc.aspx?resid=2c292aa9-6ce4-423c-8c80-430ba92bcbe9&cid=f692d2862d814f5c&activeCell=Non%20PO!A1"
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Invoice link",
+              "fieldValue": "={{ $('non op').item.json.link }}"
+            },
+            {
+              "column": "Invoice number",
+              "fieldValue": "={{ $('non op').item.json.Details.invoice_number }}"
+            },
+            {
+              "column": "Date",
+              "fieldValue": "={{ $('non op').item.json.Details.date }}"
+            },
+            {
+              "column": "bill to",
+              "fieldValue": "={{ $('non op').item.json.Details.bill_to }}"
+            },
+            {
+              "column": "Description",
+              "fieldValue": "={{ $('non op').item.json.Details.description}}"
+            },
+            {
+              "column": "Total",
+              "fieldValue": "={{ $('non op').item.json.Details.total }}"
+            },
+            {
+              "column": "Terms of payment",
+              "fieldValue": "={{ $('non op').item.json.Details.terms_of_payment }}"
+            },
+            {
+              "column": "Payment method",
+              "fieldValue": "={{ $('non op').item.json.Details.payment_method }}"
+            },
+            {
+              "column": "Send payment to",
+              "fieldValue": "={{ $('non op').item.json.Details.send_payment_to }}"
+            },
+            {
+              "column": "Payment address",
+              "fieldValue": "={{ $('non op').item.json.Details.payment_address }}"
+            },
+            {
+              "column": "Extra info",
+              "fieldValue": "={{ $('non op').item.json.Details['extra information'] }}"
+            },
+            {
+              "column": "Update Date and Time",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "column": "Tax amount",
+              "fieldValue": "={{ $('non op').item.json.Details.tex }}"
+            },
+            {
+              "column": "Delivery Charges",
+              "fieldValue": "={{ $('non op').item.json.Details['delivery charges']}}"
+            },
+            {
+              "column": "Discount amount",
+              "fieldValue": "={{ $('non op').item.json.Details['discount amount'] }}"
+            },
+            {
+              "column": "Sub total",
+              "fieldValue": "={{ $('non op').item.json.Details.subtotal }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2.1,
+      "position": [
+        2224,
+        -800
+      ],
+      "id": "042aef8a-2d7c-4c0c-9dea-84b2ef9797ab",
+      "name": "non po Append data to sheet1",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "qU3bgEh5NbOjknY9",
+          "name": "Raj Outlook Expense"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\":[\n      {\"text\": \"Extract The Contents Of This PDF\"},\n      {\n        \"inline_data\": {\n          \"mime_type\": \"application/pdf\",\n          \"data\": \"{{ $json.data }}\"\n        }\n      }\n    ]\n  }]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -192,
+        -544
+      ],
+      "id": "03a9a9fb-9379-4157-a4c8-cbdb22657197",
+      "name": "Extract PDF Content Using Gemini Vision",
+      "retryOnFail": true,
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "cU6WCUeWUJuylmzj",
+          "name": "Query Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## PDF to text",
+        "height": 200,
+        "width": 820
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -576
+      ],
+      "id": "2322299b-5aaa-4cef-aed6-37bac0b8e1b4",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "73fe4722-4659-4e88-b173-5631cdfc11f2",
+              "name": "text",
+              "value": "={{ $json.candidates[0].content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        -544
+      ],
+      "id": "277061a2-27fc-42ea-b53e-64ea0f9fca57",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "resource": "worksheet",
+        "operation": "append",
+        "workbook": {
+          "__rl": true,
+          "value": "F692D2862D814F5C!s2c292aa96ce4423c8c80430ba92bcbe9",
+          "mode": "list",
+          "cachedResultName": "po invoices2",
+          "cachedResultUrl": "https://onedrive.live.com/personal/f692d2862d814f5c/_layouts/15/doc.aspx?resid=2c292aa9-6ce4-423c-8c80-430ba92bcbe9&cid=f692d2862d814f5c"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "{00000000-0001-0000-0000-000000000000}",
+          "mode": "list",
+          "cachedResultName": "PO",
+          "cachedResultUrl": "https://onedrive.live.com/personal/f692d2862d814f5c/_layouts/15/doc.aspx?resid=2c292aa9-6ce4-423c-8c80-430ba92bcbe9&cid=f692d2862d814f5c&activeCell=PO!A1"
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Invoice link",
+              "fieldValue": "={{ $('op1').item.json.link }}"
+            },
+            {
+              "column": "Invoice number",
+              "fieldValue": "={{ $('op1').item.json.Details.invoice_number }}"
+            },
+            {
+              "column": "Date",
+              "fieldValue": "={{ $('op1').item.json.Details.date }}"
+            },
+            {
+              "column": "bill to",
+              "fieldValue": "={{ $('op1').item.json.Details.bill_to }}"
+            },
+            {
+              "column": "Description",
+              "fieldValue": "={{ $('op1').item.json.Details.description }}"
+            },
+            {
+              "column": "Total",
+              "fieldValue": "={{ $('op1').item.json.Details.total }}"
+            },
+            {
+              "column": "Terms of payment",
+              "fieldValue": "={{ $('op1').item.json.Details.terms_of_payment }}"
+            },
+            {
+              "column": "Payment method",
+              "fieldValue": "={{ $('op1').item.json.Details.payment_method }}"
+            },
+            {
+              "column": "Send payment to",
+              "fieldValue": "={{ $('op1').item.json.Details.send_payment_to }}"
+            },
+            {
+              "column": "Payment address",
+              "fieldValue": "={{ $('op1').item.json.Details.payment_address }}"
+            },
+            {
+              "column": "Extra info",
+              "fieldValue": "={{ $('op1').item.json.Details['extra information'] }}"
+            },
+            {
+              "column": "Update Date and Time",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "column": "Sub total",
+              "fieldValue": "={{ $('op1').item.json.Details.subtotal }}"
+            },
+            {
+              "column": "Tax amount",
+              "fieldValue": "={{ $('op1').item.json.Details.tex }}"
+            },
+            {
+              "column": "Discount amount",
+              "fieldValue": "={{ $('op1').item.json.Details['discount amount'] }}"
+            },
+            {
+              "column": "Delivery Charges",
+              "fieldValue": "={{ $('op1').item.json.Details['delivery charges']}}"
+            },
+            {
+              "column": "PO Number",
+              "fieldValue": "={{ $json.Details.po_number }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2.1,
+      "position": [
+        2224,
+        -960
+      ],
+      "id": "257db883-10f4-43fc-82de-3bb8ce04eac0",
+      "name": "po Append data to sheet",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "qU3bgEh5NbOjknY9",
+          "name": "Raj Outlook Expense"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ca4e539f-abc4-45fd-a733-e4b869a5ae16",
+              "name": "=link",
+              "value": "={{ $json.webUrl }}",
+              "type": "string"
+            },
+            {
+              "id": "058223ce-20b2-4cbf-bdb9-06a1a5a4c0d7",
+              "name": "Details",
+              "value": "={{ $('Loop Over Items3').item.json.output }}",
+              "type": "object"
+            },
+            {
+              "id": "7ac73ded-e1e7-45f9-a365-efe101e5216a",
+              "name": "PO status",
+              "value": "={{ $('Loop Over Items3').item.json.po_status }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2096,
+        -960
+      ],
+      "id": "720a3292-d952-4b97-aa71-58177cac8b48",
+      "name": "op1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ca4e539f-abc4-45fd-a733-e4b869a5ae16",
+              "name": "=link",
+              "value": "={{ $json.webUrl }}",
+              "type": "string"
+            },
+            {
+              "id": "559ed818-9949-486c-bac2-6187676d2346",
+              "name": "Details",
+              "value": "={{ $('Loop Over Items4').item.json.output }}",
+              "type": "object"
+            },
+            {
+              "id": "2debec77-abb0-4de7-8922-1ef095616319",
+              "name": "PO status",
+              "value": "={{ $('Loop Over Items4').item.json.po_status }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2096,
+        -800
+      ],
+      "id": "9fdb43c0-3587-471f-ae36-420dc2c5f260",
+      "name": "non op"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "binaryPropertyName": "={{ $json.attachments }}",
+        "options": {
+          "keepSource": "both"
+        }
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -352,
+        -544
+      ],
+      "id": "19acf8c1-c80e-45b2-8db4-81a5d524895f",
+      "name": "Extract from File2"
+    },
+    {
+      "parameters": {
+        "numberInputs": 3
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        256,
+        -464
+      ],
+      "id": "61067b19-c837-4212-a486-d72b9b2da361",
+      "name": "Merge4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f5bef78d-7028-419a-8bdb-5d4db7ac779b",
+              "name": "text",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        128,
+        -144
+      ],
+      "id": "e9ec0c78-583e-4d2d-b94c-a845015f2899",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "content": "## Image() to text",
+        "width": 820
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -384
+      ],
+      "id": "85f7e483-125e-4e51-a9dc-ccbaff03a6cb",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "text": "Extract Image Details.",
+        "inputType": "base64",
+        "binaryPropertyName": "={{ $json.attachments }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -256,
+        -368
+      ],
+      "id": "65d5996d-4a70-4407-a1cc-4faed195ef29",
+      "name": "Analyze image",
+      "credentials": {
+        "openAiApi": {
+          "id": "CNL5aGYVK8mvHtak",
+          "name": "omni ai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.attachment_metadata.fileType }}",
+                    "rightValue": "pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2bc32943-eec2-4414-b564-965a872e6dc5"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b789d403-24fb-4b60-b014-24cf8d6ac6c2",
+                    "leftValue": "={{ $json.attachment_metadata.fileType }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0024a96c-20da-4946-abef-236a898098af",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -720,
+        -368
+      ],
+      "id": "a27443dd-c7f9-4d27-b6b9-6324bbe5270c",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8525a987-4b8f-4864-885c-8aabddce19d4",
+              "name": "text",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        -368
+      ],
+      "id": "c72cea36-1bc2-44db-bfb4-ebe0a2180e83",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -256,
+        -656
+      ],
+      "id": "274cb673-7e4d-446f-8ee7-dcf6d2056283",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        864,
+        -1120
+      ],
+      "id": "e308ad34-0f2d-41b5-872f-353fc77b250a",
+      "name": "Merge6"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "query": "={{ $('Loop Over Items4').item.json.filename }}"
+      },
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        -800
+      ],
+      "id": "fe2d1050-5f2b-477e-a9e4-618c21d988d3",
+      "name": "non op1",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "KrlS4WwuTFWKFLTs",
+          "name": "Raj-Omni AI Expense Agent"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -800
+      ],
+      "id": "16976316-8c47-4f71-b14a-735e23caec8b",
+      "name": "Limit"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -960
+      ],
+      "id": "b8d31282-18b4-40e7-ab6f-f868192a86d2",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "query": "={{ $('Loop Over Items3').item.json.filename }}"
+      },
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        -960
+      ],
+      "id": "a98c0315-653f-4bff-9b8d-7839834265c9",
+      "name": "op2",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "KrlS4WwuTFWKFLTs",
+          "name": "Raj-Omni AI Expense Agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.related_text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# Overview  \nYou are an AI agent task Extract details from text\n\n# How to do exactly\nTake all the details and make sure output separately \n \n\n# What you have to use\n- Structured Output Parser\n\nI saw you one Invoice detail output But make sure not all invoices are same So understand by self and generate output\n\nI show you Example details outputs:\n1. invoice number \n2. date \n3. Bill to \n4. Description (if in there : | Item No. | Description | Quantity | Unit Price | Total)\n5. total\n6. terms of payment \n7. Payment method \n8. Send payment to \n9. Payment address \n10. extra information: (like all extra details)\n11. subtotal\n12. PO number\n13. tex\n14. discount amount\n15. delivery charges\n\n## important:\n- make sure only description output in Json format",
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        832,
+        -96
+      ],
+      "id": "4e06dbb4-5ee3-428b-abc2-12da54fc0bb9",
+      "name": "AI Agent1",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// // Keywords for law/criminal classification (invoice detection)\n// const lawKeywords = ['Invoice', 'invoice', 'INV'];\n\n// // Regex: matches PO + optional separator + (\"number\" OR digits)\n// const poPattern = /\\bpo[\\s\\-_:]*(number|\\d+)/i;\n\n// // Regex: detect start of new invoice (common patterns)\n// const invoiceSplitPattern = /(Invoice Number[:\\s]*INV-\\d+|\\bINV-\\d+\\b)/gi;\n\n// // Process all incoming items\n// let results = [];\n\n// $input.all().forEach(item => {\n//   const text = item.json.text || '';\n//   const attachments = item.json.attachments || null;\n//   const filename = item.json.attachment_metadata?.fileName || null;\n//   const binary = item.binary || {};\n\n//   // Split text keeping markers\n//   const parts = text.split(invoiceSplitPattern).filter(p => p.trim() !== '');\n//   const matches = text.match(invoiceSplitPattern) || [];\n\n//   let invoices = [];\n//   let lastMarker = null;\n\n//   parts.forEach(part => {\n//     if (invoiceSplitPattern.test(part)) {\n//       // This is a new invoice marker\n//       lastMarker = part.trim();\n//     } else {\n//       // This is body → attach to last marker if exists\n//       if (lastMarker) {\n//         invoices.push((lastMarker + ' ' + part).trim());\n//       }\n//     }\n//   });\n\n//   invoices.forEach(invText => {\n//     const lowercaseText = invText.toLowerCase();\n\n//     // Skip if no total info\n//     if (!lowercaseText.includes(\"total_amount\") && !lowercaseText.includes(\"total\")) {\n//       return;\n//     }\n\n//     // Remove invoice_title if present\n//     let cleanedText = invText.replace(/\"invoice_title\"\\s*:\\s*\".*?\",?\\s*/gi, '');\n\n//     // Check for law-related (Invoice detection)\n//     const isLawRelated = lawKeywords.some(keyword => lowercaseText.includes(keyword));\n\n//     // Determine PO status\n//     const classification = poPattern.test(invText) ? 'po' : 'non po';\n\n//     if (isLawRelated) {\n//       const filteredBinary = {};\n//       if (attachments && binary[attachments]) {\n//         filteredBinary[attachments] = binary[attachments];\n//       }\n\n//       results.push({\n//         json: {\n//           related_text: cleanedText,\n//           attachments: attachments,\n//           filename: filename,\n//           po_status: classification\n//         },\n//         binary: filteredBinary\n//       });\n//     }\n//   });\n// });\n\n// return results;\n\n// Keywords for law/criminal classification (invoice detection)\nconst lawKeywords = ['Invoice', 'invoice', 'INV'];\n\n// Regex: matches PO + optional separator + (\"number\" OR digits)\nconst poPattern = /\\bpo[\\s\\-_:]*(number|\\d+)/i;\n\n// Regex: detect start of new invoice (common patterns)\nconst invoiceSplitPattern = /(Invoice Number[:\\s]*INV-\\d+|\\bINV-\\d+\\b)/gi;\n\n// Process all incoming items\nlet results = [];\n\n$input.all().forEach(item => {\n  const text = item.json.text || '';\n  const attachments = item.json.attachments || null;\n  const mail_id = item.json.message_id || null;\n  const filename = item.json.attachment_metadata?.fileName || null;\n  const binary = item.binary || {};\n\n  // Split text keeping markers\n  const parts = text.split(invoiceSplitPattern).filter(p => p.trim() !== '');\n  const matches = text.match(invoiceSplitPattern) || [];\n\n  let invoices = [];\n  let lastMarker = null;\n\n  parts.forEach(part => {\n    if (invoiceSplitPattern.test(part)) {\n      lastMarker = part.trim(); // new invoice marker\n    } else {\n      if (lastMarker) {\n        invoices.push((lastMarker + ' ' + part).trim());\n      }\n    }\n  });\n\n  invoices.forEach(invText => {\n    const lowercaseText = invText.toLowerCase();\n\n    // Skip if no total info\n    if (!lowercaseText.includes(\"total_amount\") && !lowercaseText.includes(\"total\")) {\n      return;\n    }\n\n    // Remove invoice_title if present\n    let cleanedText = invText.replace(/\"invoice_title\"\\s*:\\s*\".*?\",?\\s*/gi, '');\n\n    // Check for law-related (Invoice detection)\n    const isLawRelated = lawKeywords.some(keyword => lowercaseText.includes(keyword));\n\n    // Determine PO status\n    let classification = poPattern.test(invText) ? 'po' : 'non po';\n\n    // Check for credit memo in filename\n    if (filename && /credit[_\\s]?memo/i.test(filename)) {\n      classification = classification + \" (cm)\";\n    }\n\n    if (isLawRelated) {\n      const filteredBinary = {};\n      if (attachments && binary[attachments]) {\n        filteredBinary[attachments] = binary[attachments];\n      }\n\n      results.push({\n        json: {\n          related_text: cleanedText,\n          attachments: attachments,\n          filename: filename,\n          po_status: classification,\n          mail_Id: mail_id\n        },\n        binary: filteredBinary\n      });\n    }\n  });\n});\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        -512
+      ],
+      "id": "3e6bb55b-45b0-49f0-a9dd-aa2d0fe6fe28",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "content": "## Upload PDF to Google Drive and Share link to Google sheets",
+        "height": 908,
+        "width": 1604,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        800,
+        -1200
+      ],
+      "id": "12dc3e97-ff4d-4f6e-ae77-6cd57341b00b",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "related_text",
+        "include": "allOtherFields",
+        "options": {
+          "includeBinary": true
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -256
+      ],
+      "id": "e91d8845-9c21-4511-8232-b2b615a71a44",
+      "name": "Split Out3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        832,
+        128
+      ],
+      "id": "957665a7-f572-4315-bc84-9af322e5c110",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "CNL5aGYVK8mvHtak",
+          "name": "omni ai"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"invoice_number\": \"INV-1001\",\n  \"date\": \"2025-07-23\",\n  \"bill_to\": \"Monat Global Corp, 3470 NW 82nd Ave, Suite 910, Doral, FL 33122, USA\",\n  \"description\": \"Professional Consulting Services\",\n  \"total\": \"$12000.00\",\n  \"terms_of_payment\": \"Net 30 Days\",\n  \"payment_method\": \"Check\",\n  \"send_payment_to\": \"ABC Products and Services\",\n  \"payment_address\": \"6768 Broward Blvd, #303, Fort Lauderdale, FL 33328\",\n  \"extra information\": \"\",\n  \"subtotal\":\"\",\n  \"po_number\":\"\",\n  \"tex\":\"\",\n  \"discount amount\":\"\",\n  \"delivery charges\":\"\"\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        976,
+        112
+      ],
+      "id": "f6d83fde-5398-401d-a344-b24181b27102",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.po_status }}",
+                    "rightValue": "po",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "51e89dcb-8de4-4c82-b360-da0a05461507"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4c11e4db-8785-4d15-8605-11701f6626d9",
+                    "leftValue": "={{ $json.po_status }}",
+                    "rightValue": "non po",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "48bf2af3-df50-48f2-ba62-70ca9296e34a",
+                    "leftValue": "={{ $json.po_status }}",
+                    "rightValue": "non po (cm)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0fd1058c-890b-48ca-a28b-8e94e36a51d0",
+                    "leftValue": "={{ $json.po_status }}",
+                    "rightValue": "po (cm)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1456,
+        -816
+      ],
+      "id": "7365598e-17f6-4312-9a41-b6c81096f8e1",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "content": "## Execute Required details from pdf text",
+        "height": 444,
+        "width": 668,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -128
+      ],
+      "id": "b2e1dd8d-fac3-48b9-91e0-5143749e7c9b",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2096,
+        -288
+      ],
+      "id": "ffa09df6-1420-4746-be45-8396a4400208",
+      "name": "Merge10"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1696,
+        -960
+      ],
+      "id": "bbad4f5b-3635-4451-a1e6-4fef183d5d93",
+      "name": "Loop Over Items3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1696,
+        -800
+      ],
+      "id": "4fb3ae9f-30aa-4c2e-9b9a-c7a636f75fb0",
+      "name": "Loop Over Items4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2464,
+        -240
+      ],
+      "id": "504e654f-5dd9-4f58-96ed-ade6cd120b47",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "887b520d-cdcc-4346-98e8-63368c3068bd",
+              "leftValue": "={{ $json.related_text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        640,
+        -96
+      ],
+      "id": "356c6e0f-23ce-4d14-b692-fef8c8d2a0d4",
+      "name": "Filter6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "887b520d-cdcc-4346-98e8-63368c3068bd",
+              "leftValue": "={{ $json.related_text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        640,
+        -256
+      ],
+      "id": "68c9f8dc-31bb-45ca-9b2b-86623d983b47",
+      "name": "Filter7"
+    },
+    {
+      "parameters": {
+        "options": {
+          "timezone": "America/New_york"
+        }
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -1104,
+        -752
+      ],
+      "id": "9dea8b82-4862-4052-b505-778998469503",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "699ca155-38d8-4dca-b59c-55fcf09c66cb",
+              "leftValue": "={{ $json.time }}",
+              "rightValue": "=10:00",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            },
+            {
+              "id": "94701c0c-32b9-49be-af20-cc2a1029c809",
+              "leftValue": "={{ $json.time }}",
+              "rightValue": "=00:00",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -880,
+        -752
+      ],
+      "id": "9501ab41-6404-44c4-ad64-cbee0b8b6237",
+      "name": "Filter2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d3ccbf36-f2fc-432e-ad41-d1ca9d69689f",
+              "name": "date",
+              "value": "={{ $('Date & Time').item.json.currentDate.toDateTime().format('yyyy-MM-dd')}}",
+              "type": "string"
+            },
+            {
+              "id": "17783b77-a492-4480-b59e-34c19428bc87",
+              "name": "time",
+              "value": "={{ $('Date & Time').item.json.currentDate.toDateTime().format('HH:mm')}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -992,
+        -752
+      ],
+      "id": "d1d3f634-27c2-4a3c-9a10-b3fbd4ce99ad",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "94701c0c-32b9-49be-af20-cc2a1029c809",
+              "leftValue": "={{ $json.date }}",
+              "rightValue": "=2025-09-01",
+              "operator": {
+                "type": "dateTime",
+                "operation": "before"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -768,
+        -752
+      ],
+      "id": "e7b793ad-610b-4845-a702-9240e759d8d9",
+      "name": "Filter3"
+    },
+    {
+      "parameters": {
+        "fileName": "={{ $json.filename }}",
+        "parentId": "=F692D2862D814F5C!sbb34c6f293d742fa9f34677061d6d6dc",
+        "binaryData": true,
+        "binaryPropertyName": "={{ $json.attachments }}"
+      },
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        -960
+      ],
+      "id": "3046e896-28c2-4ffa-8942-9096a34336b6",
+      "name": "op Upload1",
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "KrlS4WwuTFWKFLTs",
+          "name": "Raj-Omni AI Expense Agent"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "fileName": "={{ $json.filename }}",
+        "parentId": "=F692D2862D814F5C!s2aaebd0ddbf048d1ad9307914887437b",
+        "binaryData": true,
+        "binaryPropertyName": "={{ $json.attachments }}"
+      },
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        -816
+      ],
+      "id": "d4d4e21c-dbfb-4180-9f86-b23a348ff8cd",
+      "name": "non op Upload",
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "KrlS4WwuTFWKFLTs",
+          "name": "Raj-Omni AI Expense Agent"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": 40
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        -688
+      ],
+      "id": "f78c2efc-bc50-4df5-a3b7-c7e548d89df5",
+      "name": "Wait3",
+      "webhookId": "f55aac7c-b4be-4a0c-a697-30f92adec8d1"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1216,
+        -704
+      ],
+      "id": "38dba49d-1ca5-42ae-9d75-38b204f98c32",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.po_status }}",
+                    "rightValue": "po",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "51e89dcb-8de4-4c82-b360-da0a05461507"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4c11e4db-8785-4d15-8605-11701f6626d9",
+                    "leftValue": "={{ $json.po_status }}",
+                    "rightValue": "non po",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "48bf2af3-df50-48f2-ba62-70ca9296e34a",
+                    "leftValue": "={{ $json.po_status }}",
+                    "rightValue": "non po (cm)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0bc60828-216c-48d0-8e33-f68f152e4871",
+                    "leftValue": "={{ $json.po_status }}",
+                    "rightValue": "po (cm)",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1024,
+        -1152
+      ],
+      "id": "bb709e65-3b2f-4d6b-ab86-d0edd3b23c1b",
+      "name": "Switch4"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1280,
+        -912
+      ],
+      "id": "a6001638-2ae8-48cb-ac86-c544ff237f04",
+      "name": "Merge5"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -640
+      ],
+      "id": "cbe4720b-2ffb-4e68-96c7-500e9bb347ec",
+      "name": "Limit2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1696,
+        -640
+      ],
+      "id": "74f2ecee-a3a6-4c22-a4bf-6b6da5977505",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "resource": "worksheet",
+        "operation": "append",
+        "workbook": {
+          "__rl": true,
+          "value": "F692D2862D814F5C!s2c292aa96ce4423c8c80430ba92bcbe9",
+          "mode": "list",
+          "cachedResultName": "po invoices2",
+          "cachedResultUrl": "https://onedrive.live.com/personal/f692d2862d814f5c/_layouts/15/doc.aspx?resid=2c292aa9-6ce4-423c-8c80-430ba92bcbe9&cid=f692d2862d814f5c"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "{883D905D-F676-4572-A3C0-B2ADC3684F2B}",
+          "mode": "list",
+          "cachedResultName": "Credit Memos",
+          "cachedResultUrl": "https://onedrive.live.com/personal/f692d2862d814f5c/_layouts/15/doc.aspx?resid=2c292aa9-6ce4-423c-8c80-430ba92bcbe9&cid=f692d2862d814f5c&activeCell=Credit%20Memos!A1"
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Invoice link",
+              "fieldValue": "={{ $('CM').item.json.link }}"
+            },
+            {
+              "column": "Invoice number",
+              "fieldValue": "={{ $('CM').item.json.Details.invoice_number }}"
+            },
+            {
+              "column": "Date",
+              "fieldValue": "={{ $('CM').item.json.Details.date }}"
+            },
+            {
+              "column": "bill to",
+              "fieldValue": "={{ $('CM').item.json.Details.bill_to }}"
+            },
+            {
+              "column": "Description",
+              "fieldValue": "={{ $('CM').item.json.Details.description}}"
+            },
+            {
+              "column": "Total",
+              "fieldValue": "={{ $('CM').item.json.Details.total }}"
+            },
+            {
+              "column": "Terms of payment",
+              "fieldValue": "={{ $('CM').item.json.Details.terms_of_payment }}"
+            },
+            {
+              "column": "Payment method",
+              "fieldValue": "={{ $('CM').item.json.Details.payment_method }}"
+            },
+            {
+              "column": "Send payment to",
+              "fieldValue": "={{ $('CM').item.json.Details.send_payment_to }}"
+            },
+            {
+              "column": "Payment address",
+              "fieldValue": "={{ $('CM').item.json.Details.payment_address }}"
+            },
+            {
+              "column": "Extra info",
+              "fieldValue": "={{ $('CM').item.json.Details['extra information'] }}"
+            },
+            {
+              "column": "Update Date and Time",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "column": "Tax amount",
+              "fieldValue": "={{ $('CM').item.json.Details.tex }}"
+            },
+            {
+              "column": "Delivery Charges",
+              "fieldValue": "={{ $('CM').item.json.Details['delivery charges'] }}"
+            },
+            {
+              "column": "Discount amount",
+              "fieldValue": "={{ $('CM').item.json.Details['discount amount'] }}"
+            },
+            {
+              "column": "Sub total",
+              "fieldValue": "={{ $('CM').item.json.Details.subtotal }}"
+            },
+            {
+              "column": "PO Number",
+              "fieldValue": "={{ $('CM').item.json.Details.po_number }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2.1,
+      "position": [
+        2224,
+        -640
+      ],
+      "id": "7af5b852-9c43-4528-aa26-5b6f5fc1ae5c",
+      "name": "CM Append data to sheet",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "qU3bgEh5NbOjknY9",
+          "name": "Raj Outlook Expense"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ca4e539f-abc4-45fd-a733-e4b869a5ae16",
+              "name": "=link",
+              "value": "={{ $json.webUrl }}",
+              "type": "string"
+            },
+            {
+              "id": "559ed818-9949-486c-bac2-6187676d2346",
+              "name": "Details",
+              "value": "={{ $('Loop Over Items').item.json.output }}",
+              "type": "object"
+            },
+            {
+              "id": "2debec77-abb0-4de7-8922-1ef095616319",
+              "name": "PO status",
+              "value": "={{ $('Loop Over Items').item.json.po_status }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2096,
+        -640
+      ],
+      "id": "65128f66-7b7a-4125-857b-8a306001f398",
+      "name": "CM"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "query": "={{ $('Loop Over Items').item.json.filename }}"
+      },
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        -640
+      ],
+      "id": "10a74e70-8d41-4ed0-a3ba-13f498d1c99f",
+      "name": "CM1",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "KrlS4WwuTFWKFLTs",
+          "name": "Raj-Omni AI Expense Agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        864,
+        -960
+      ],
+      "id": "25923952-843c-48c3-b240-faf0a636f0b8",
+      "name": "Loop Over Items5"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        864,
+        -816
+      ],
+      "id": "a92a3723-00ad-43e4-80df-ec222dc1cefe",
+      "name": "Loop Over Items6"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        864,
+        -688
+      ],
+      "id": "c2d44c8b-9e9b-45d5-a58a-0651c3ec3823",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "fileName": "={{ $json.filename }}",
+        "parentId": "=F692D2862D814F5C!s2aaebd0ddbf048d1ad9307914887437b",
+        "binaryData": true,
+        "binaryPropertyName": "={{ $json.attachments }}"
+      },
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        -688
+      ],
+      "id": "844ee55e-0dd2-4893-ab6d-391598f8790f",
+      "name": "credit memo non po",
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "KrlS4WwuTFWKFLTs",
+          "name": "Raj-Omni AI Expense Agent"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        864,
+        -544
+      ],
+      "id": "332b6701-40d6-4262-8e58-de64803c8187",
+      "name": "Loop Over Items7"
+    },
+    {
+      "parameters": {
+        "fileName": "={{ $json.filename }}",
+        "parentId": "=F692D2862D814F5C!s2aaebd0ddbf048d1ad9307914887437b",
+        "binaryData": true,
+        "binaryPropertyName": "={{ $json.attachments }}"
+      },
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        -544
+      ],
+      "id": "ee05dc7e-ecd1-4cad-a63e-f1a2f3263709",
+      "name": "credit memo non po1",
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "KrlS4WwuTFWKFLTs",
+          "name": "Raj-Omni AI Expense Agent"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1968,
+        -480
+      ],
+      "id": "44e2d3ae-5b1e-474c-9ecf-8993e5375ec0",
+      "name": "Limit3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1696,
+        -480
+      ],
+      "id": "ed32f962-bc53-4343-8a69-80d89642d33d",
+      "name": "Loop Over Items8"
+    },
+    {
+      "parameters": {
+        "resource": "worksheet",
+        "operation": "append",
+        "workbook": {
+          "__rl": true,
+          "value": "F692D2862D814F5C!s2c292aa96ce4423c8c80430ba92bcbe9",
+          "mode": "list",
+          "cachedResultName": "po invoices2",
+          "cachedResultUrl": "https://onedrive.live.com/personal/f692d2862d814f5c/_layouts/15/doc.aspx?resid=2c292aa9-6ce4-423c-8c80-430ba92bcbe9&cid=f692d2862d814f5c"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "{883D905D-F676-4572-A3C0-B2ADC3684F2B}",
+          "mode": "list",
+          "cachedResultName": "Credit Memos",
+          "cachedResultUrl": "https://onedrive.live.com/personal/f692d2862d814f5c/_layouts/15/doc.aspx?resid=2c292aa9-6ce4-423c-8c80-430ba92bcbe9&cid=f692d2862d814f5c&activeCell=Credit%20Memos!A1"
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Invoice link",
+              "fieldValue": "={{ $('CM2').item.json.link }}"
+            },
+            {
+              "column": "Invoice number",
+              "fieldValue": "={{ $('CM2').item.json.Details.invoice_number }}"
+            },
+            {
+              "column": "Date",
+              "fieldValue": "={{ $('CM2').item.json.Details.date }}"
+            },
+            {
+              "column": "bill to",
+              "fieldValue": "={{ $('CM2').item.json.Details.bill_to }}"
+            },
+            {
+              "column": "Description",
+              "fieldValue": "={{ $('CM2').item.json.Details.description}}"
+            },
+            {
+              "column": "Total",
+              "fieldValue": "={{ $('CM2').item.json.Details.total }}"
+            },
+            {
+              "column": "Terms of payment",
+              "fieldValue": "={{ $('CM2').item.json.Details.terms_of_payment }}"
+            },
+            {
+              "column": "Payment method",
+              "fieldValue": "={{ $('CM2').item.json.Details.payment_method }}"
+            },
+            {
+              "column": "Send payment to",
+              "fieldValue": "={{ $('CM2').item.json.Details.send_payment_to }}"
+            },
+            {
+              "column": "Payment address",
+              "fieldValue": "={{ $('CM2').item.json.Details.payment_address }}"
+            },
+            {
+              "column": "Extra info",
+              "fieldValue": "={{ $('CM2').item.json.Details['extra information'] }}"
+            },
+            {
+              "column": "Update Date and Time",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "column": "Tax amount",
+              "fieldValue": "={{ $('CM2').item.json.Details.tex }}"
+            },
+            {
+              "column": "Delivery Charges",
+              "fieldValue": "={{ $('CM2').item.json.Details['delivery charges'] }}"
+            },
+            {
+              "column": "Discount amount",
+              "fieldValue": "={{ $('CM2').item.json.Details['discount amount'] }}"
+            },
+            {
+              "column": "Sub total",
+              "fieldValue": "={{ $('CM2').item.json.Details.subtotal }}"
+            },
+            {
+              "column": "PO Number",
+              "fieldValue": "={{ $('CM2').item.json.Details.po_number }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2.1,
+      "position": [
+        2224,
+        -480
+      ],
+      "id": "38175464-0d73-4476-b833-b84ed9176be9",
+      "name": "CM Append data to sheet1",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "qU3bgEh5NbOjknY9",
+          "name": "Raj Outlook Expense"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ca4e539f-abc4-45fd-a733-e4b869a5ae16",
+              "name": "=link",
+              "value": "={{ $json.webUrl }}",
+              "type": "string"
+            },
+            {
+              "id": "559ed818-9949-486c-bac2-6187676d2346",
+              "name": "Details",
+              "value": "={{ $('Loop Over Items8').item.json.output }}",
+              "type": "object"
+            },
+            {
+              "id": "2debec77-abb0-4de7-8922-1ef095616319",
+              "name": "PO status",
+              "value": "={{ $('Loop Over Items8').item.json.po_status }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2096,
+        -480
+      ],
+      "id": "5efae9cd-f9e9-41b5-851d-96aaf3840a55",
+      "name": "CM2"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "query": "={{ $('Loop Over Items8').item.json.filename }}"
+      },
+      "type": "n8n-nodes-base.microsoftOneDrive",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        -480
+      ],
+      "id": "6ffb3cda-9f4c-4331-a4d5-8dc9d5890418",
+      "name": "CM3",
+      "retryOnFail": true,
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "KrlS4WwuTFWKFLTs",
+          "name": "Raj-Omni AI Expense Agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $json.mail_Id }}",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "AAMkAGVhYTBiMjJmLWE4NDgtNDM4Yy05ZmIwLTI4NmJkOWFiODlhMAAuAAAAAABH6DvZyAXmSLHl9VklBHaqAQDcBSv1A-YZRZYsoEsDZY3MAAAAAAEnAAA=",
+          "mode": "list",
+          "cachedResultName": "Archive",
+          "cachedResultUrl": "https://outlook.office365.com/mail/AAMkAGVhYTBiMjJmLWE4NDgtNDM4Yy05ZmIwLTI4NmJkOWFiODlhMAAuAAAAAABH6DvZyAXmSLHl9VklBHaqAQDcBSv1A%2FYZRZYsoEsDZY3MAAAAAAEnAAA%3D"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        2336,
+        -240
+      ],
+      "id": "376612c9-cb6e-44fa-b79b-3ea43403b820",
+      "name": "Move a message",
+      "webhookId": "163fb4bc-7f72-4483-9ced-f15966d6eb5a",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "tX2LTwu5oBI7r8IW",
+          "name": "Raj-S4 email"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        -240
+      ],
+      "id": "22b2e878-e8e5-499c-8299-54dd69f86d0c",
+      "name": "Limit4"
+    }
+  ],
+  "pinData": {
+    "Microsoft Outlook Trigger": [
+      {
+        "json": {
+          "id": "AAMkAGVhYTBiMjJmLWE4NDgtNDM4Yy05ZmIwLTI4NmJkOWFiODlhMABGAAAAAABH6DvZyAXmSLHl9VklBHaqBwDcBSv1A-YZRZYsoEsDZY3MAAAAAAEMAADcBSv1A-YZRZYsoEsDZY3MAAAQm3bpAAA=",
+          "conversationId": "AAQkAGVhYTBiMjJmLWE4NDgtNDM4Yy05ZmIwLTI4NmJkOWFiODlhMAAQAPTV8x8hcahMlL-sIDGJ8Vc=",
+          "subject": "test invoice",
+          "bodyPreview": "Raj\r\nDirector-S4 Solutions, Omnipay\r\n+1 9544989151\r\nraj.kattelu@s4solutions.us\r\nhttps://www.s4solutions.us/\r\nEmbedded SAP B2B, B2C Payments!",
+          "from": "raj.kattelu@s4solutions.us",
+          "to": [
+            "ap@s4solutions.us"
+          ],
+          "categories": [],
+          "hasAttachments": true
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Filter1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Microsoft Outlook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Remove Duplicates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Remove Duplicates": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "non po Append data to sheet1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract PDF Content Using Gemini Vision": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "po Append data to sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "op1": {
+      "main": [
+        [
+          {
+            "node": "po Append data to sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "non op": {
+      "main": [
+        [
+          {
+            "node": "non po Append data to sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File2": {
+      "main": [
+        [
+          {
+            "node": "Extract PDF Content Using Gemini Vision",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge4": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Extract from File2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge6": {
+      "main": [
+        [
+          {
+            "node": "Switch4",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "non op1": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "non op",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "op1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "op2": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Filter6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filter7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out3": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge10": {
+      "main": [
+        [
+          {
+            "node": "Limit4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items3": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "op2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items4": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "non op1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter6": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter7": {
+      "main": [
+        [
+          {
+            "node": "Split Out3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Filter2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter2": {
+      "main": [
+        [
+          {
+            "node": "Filter3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "op Upload1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "non op Upload": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch4": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge5": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Limit2": {
+      "main": [
+        [
+          {
+            "node": "CM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 2
+          }
+        ],
+        [
+          {
+            "node": "CM1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CM Append data to sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CM": {
+      "main": [
+        [
+          {
+            "node": "CM Append data to sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CM1": {
+      "main": [
+        [
+          {
+            "node": "Limit2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items5": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "op Upload1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items6": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "non op Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 2
+          }
+        ],
+        [
+          {
+            "node": "credit memo non po",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter3": {
+      "main": [
+        []
+      ]
+    },
+    "credit memo non po": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items7": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 3
+          }
+        ],
+        [
+          {
+            "node": "credit memo non po1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "credit memo non po1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit3": {
+      "main": [
+        [
+          {
+            "node": "CM2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items8": {
+      "main": [
+        [
+          {
+            "node": "Merge10",
+            "type": "main",
+            "index": 3
+          }
+        ],
+        [
+          {
+            "node": "CM3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CM Append data to sheet1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CM2": {
+      "main": [
+        [
+          {
+            "node": "CM Append data to sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CM3": {
+      "main": [
+        [
+          {
+            "node": "Limit3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move a message": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit4": {
+      "main": [
+        [
+          {
+            "node": "Move a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "5319cb2c-3ab9-4204-bcbc-5e6a93f54ec6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "458db1341c08221f8b1d869b198e1e6d316308bc98b907252e280c61baf577d0"
+  },
+  "id": "fhE6PRbbWWCmEn9q",
+  "tags": [
+    {
+      "createdAt": "2025-08-20T03:54:40.862Z",
+      "updatedAt": "2025-08-20T03:55:49.596Z",
+      "id": "JDHQjAutnqVMC7Gt",
+      "name": "Ap Agent"
+    },
+    {
+      "createdAt": "2025-09-01T15:07:58.049Z",
+      "updatedAt": "2025-09-01T15:07:58.049Z",
+      "id": "R8hEQ0YQ9dPXTpXw",
+      "name": "Development"
+    }
+  ]
+}
