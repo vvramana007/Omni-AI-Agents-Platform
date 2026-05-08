@@ -86,9 +86,6 @@ Monitoring & Analytics Dashboard
 - Enables scalable AI adoption
 - Provides secure and compliant AI workflows
 ---
-📷 Demo / Screenshots
-
-(Add diagrams or flow images here)
 
 🚀 Future Improvements
 - Multi-agent collaboration
